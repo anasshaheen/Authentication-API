@@ -1,25 +1,17 @@
-﻿using ApiAuth.API.Infrastructure.Utils;
+﻿using ApiAuth.API.Infrastructure.Extensions;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using System.Threading.Tasks;
 
 namespace ApiAuth.API
 {
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
-            var webHost = CreateWebHostBuilder(args).Build();
-
-            using (var scope = webHost.Services.CreateScope())
-            {
-                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-                await roleManager.Seed();
-            }
-
-            webHost.Run();
+            CreateWebHostBuilder(args).Build()
+                .Migrate()
+                .SeedDb()
+                .Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

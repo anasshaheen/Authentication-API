@@ -5,7 +5,15 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <UserSecretsId>54581186-2e73-48e1-811a-50fc253d17a7</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Infrastructure\HostedServices\**" />
+    <Content Remove="Infrastructure\HostedServices\**" />
+    <EmbeddedResource Remove="Infrastructure\HostedServices\**" />
+    <None Remove="Infrastructure\HostedServices\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.3" />
@@ -20,10 +28,6 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.7.9" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Infrastructure\HostedServices\" />
   </ItemGroup>
 
 </Project>

@@ -1,11 +1,11 @@
 ﻿using ApiAuth.API.DtoS;
-using ApiAuth.API.Infrastructure.Abstraction.Commands.AppUser;
 using ApiAuth.API.Infrastructure.Extensions;
 using ApiAuth.API.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using ApiAuth.API.Infrastructure.Abstraction.Commands;
 
 namespace ApiAuth.API.Controllers
 {
@@ -25,7 +25,7 @@ namespace ApiAuth.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
-            var result = await _mediator.Send(new RegisterUserCommand(dto, Request.Scheme));
+            var result = await _mediator.Send(new RegisterUserRequest(dto, Request.Scheme));
             if (!result.Succeeded)
             {
                 ModelState.AddErrors(result);
@@ -46,7 +46,7 @@ namespace ApiAuth.API.Controllers
         [HttpPost("changePassword")]
         public async Task<IActionResult> ChangePassword(ChangePasswordDto dto)
         {
-            var result = await _mediator.Send(new ChangePasswordCommand(User.Identity.Name, dto));
+            var result = await _mediator.Send(new ChangePasswordRequest(User.Identity.Name, dto));
             if (!result.Succeeded)
             {
                 ModelState.AddErrors(result);
@@ -59,7 +59,7 @@ namespace ApiAuth.API.Controllers
         [HttpPost("setPassword")]
         public async Task<IActionResult> SetPassword(SetPasswordDto dto)
         {
-            var result = await _mediator.Send(new SetPasswordCommand(User.Identity.Name, dto));
+            var result = await _mediator.Send(new SetPasswordRequest(User.Identity.Name, dto));
             if (!result.Succeeded)
             {
                 ModelState.AddErrors(result);

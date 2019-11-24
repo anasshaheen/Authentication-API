@@ -1,12 +1,11 @@
 ﻿using ApiAuth.API.DtoS;
-using ApiAuth.API.Infrastructure.Abstraction.Commands.AppUser;
-using ApiAuth.API.Infrastructure.Abstraction.Queries.AppUser;
 using ApiAuth.API.Infrastructure.Extensions;
 using ApiAuth.API.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using ApiAuth.API.Infrastructure.Abstraction.Commands;
 
 namespace ApiAuth.API.Controllers
 {
@@ -24,7 +23,7 @@ namespace ApiAuth.API.Controllers
         [HttpGet("me/providers")]
         public async Task<IActionResult> GetUserProviders()
         {
-            var result = await _mediator.Send(new GetUserProvidersQuery(User.Identity.Name));
+            var result = await _mediator.Send(new GetUserProvidersRequest(User.Identity.Name));
             return Ok(new ResponseViewModel(result));
         }
 
@@ -32,7 +31,7 @@ namespace ApiAuth.API.Controllers
         [HttpGet("me")]
         public async Task<IActionResult> GetUser()
         {
-            var result = await _mediator.Send(new GetLoggedInUserQuery(User.Identity.Name));
+            var result = await _mediator.Send(new GetLoggedInUserRequest(User.Identity.Name));
             return Ok(new ResponseViewModel(result));
         }
 
@@ -60,7 +59,7 @@ namespace ApiAuth.API.Controllers
         [HttpPost("resetPassword")]
         public async Task<IActionResult> ResetPassword(ResetPasswordDto dto)
         {
-            var result = await _mediator.Send(new ResetPasswordCommand(dto));
+            var result = await _mediator.Send(new ResetPasswordRequest(dto));
             if (!result.Succeeded)
             {
                 ModelState.AddErrors(result);

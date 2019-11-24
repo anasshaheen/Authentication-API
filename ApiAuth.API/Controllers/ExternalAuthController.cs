@@ -1,11 +1,10 @@
 ﻿using ApiAuth.API.DtoS;
-using ApiAuth.API.Infrastructure.Abstraction.Commands.AppUser;
-using ApiAuth.API.Infrastructure.Abstraction.Queries.System;
 using ApiAuth.API.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using ApiAuth.API.Infrastructure.Abstraction.Commands;
 
 namespace ApiAuth.API.Controllers
 {
@@ -23,21 +22,21 @@ namespace ApiAuth.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetExternalLoginProviders()
         {
-            var result = await _mediator.Send(new GetExternalLoginProvidersQuery());
+            var result = await _mediator.Send(new GetExternalLoginProvidersRequest());
             return Ok(new ResponseViewModel(result));
         }
 
         [HttpPost("facebook")]
         public async Task<IActionResult> Facebook([FromBody]FacebookAuthDto model)
         {
-            var result = await _mediator.Send(new FacebookExternalLoginCommand(model.AccessToken));
+            var result = await _mediator.Send(new FacebookExternalLoginRequest(model.AccessToken));
             return Ok(new ResponseViewModel(result));
         }
 
         [HttpPost("google")]
         public async Task<IActionResult> Google([FromBody]GoogleAuthDto model)
         {
-            var result = await _mediator.Send(new GoogleExternalLoginCommand(model.AccessToken, model.Code));
+            var result = await _mediator.Send(new GoogleExternalLoginRequest(model.AccessToken, model.Code));
             return Ok(new ResponseViewModel(result));
         }
 
